@@ -1,4 +1,4 @@
-# Find number of surrounding cells
+# count surrounding pathings
 def surrounding_cells(rand_wall, maze):
     s_cells = 0
     if maze[rand_wall[0] - 1][rand_wall[1]] == 1:

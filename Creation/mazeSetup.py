@@ -2,14 +2,14 @@ import random
 
 
 def setup(height, width, maze, walls):
-    # Denote all cells as unvisited
+    # Mark everything as untouched
     for i in range(0, height):
         line = []
         for j in range(0, width):
             line.append('u')
         maze.append(line)
 
-    # Randomize starting point and set it a cell
+    # Randomize starting point for first path
     starting_height = int(random.random() * height)
     starting_width = int(random.random() * width)
     if starting_height == 0:
@@ -21,14 +21,14 @@ def setup(height, width, maze, walls):
     if starting_width == width - 1:
         starting_width -= 1
 
-    # Mark it as cell and add surrounding walls to the list
+    # create first path block and add its wall coordinates to list
     maze[starting_height][starting_width] = 1
     walls.append([starting_height - 1, starting_width])
     walls.append([starting_height, starting_width - 1])
     walls.append([starting_height, starting_width + 1])
     walls.append([starting_height + 1, starting_width])
 
-    # Denote walls in maze
+    # mark walls in actual maze as 0
     maze[starting_height - 1][starting_width] = 0
     maze[starting_height][starting_width - 1] = 0
     maze[starting_height][starting_width + 1] = 0
