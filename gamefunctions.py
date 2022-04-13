@@ -14,10 +14,9 @@ def create_a_maze(gamedimension, width, height):
     g2dimensions = gamedimension
     celldimensions = min((g2dimensions) / len(maze[1]), (g2dimensions) / len(maze))
     cellspacing = celldimensions
-    y = 0
+    margin = 20
+    y = margin
     for row in maze:
-        y += cellspacing
-        margin = 20
         x = margin
         for val in row:
             if val == 0:
@@ -26,6 +25,7 @@ def create_a_maze(gamedimension, width, height):
                 newcell = Cell(c.white, x, y, celldimensions)
             x += cellspacing
             allspriteslist.add(newcell)
+        y += cellspacing
 
     startcell = None
     for cells in enumerate(maze[0]):
