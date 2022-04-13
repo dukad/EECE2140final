@@ -1,5 +1,5 @@
 import random
-import surroundings as surr
+from Creation import surroundings as surr
 
 
 def maker(height, width, maze, walls):
