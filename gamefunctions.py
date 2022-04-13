@@ -17,13 +17,14 @@ def create_a_maze(gamedimension, width, height):
     y = 0
     for row in maze:
         y += cellspacing
-        x = 0
+        margin = 20
+        x = margin
         for val in row:
-            x += cellspacing
             if val == 0:
                 newcell = Cell(c.black, x, y, celldimensions)
             else:
                 newcell = Cell(c.white, x, y, celldimensions)
+            x += cellspacing
             allspriteslist.add(newcell)
 
     startcell = None

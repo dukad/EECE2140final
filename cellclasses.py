@@ -26,7 +26,7 @@ class Character(pygame.sprite.Sprite):
 
         # i want the position of this character to depend on its location in the maze
         self.rect = self.image.get_rect()
-        self.rect.x = self.xmaze * self.dimension
+        self.rect.x = (self.xmaze - 1) * self.dimension + 20
         self.rect.y = self.ymaze * self.dimension
 
     def move(self, direction, maze):
