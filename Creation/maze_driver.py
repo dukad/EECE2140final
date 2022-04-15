@@ -2,12 +2,12 @@ import actualMaker as Maker
 import mazeSetup as Setup
 
 height = int(input('Enter height: '))
-width = int(input('Enter width: '))
+length = int(input('Enter length: '))
 maze = []
 walls = []
 
-Setup.setup(height, width, maze, walls)
-Maker.maker(height, width, maze, walls)
+Setup.setup(height, length, maze, walls)
+Maker.maker(height, length, maze, walls)
 
 for row in maze:
     for j in range(len(row)):

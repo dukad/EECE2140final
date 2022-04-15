@@ -1,35 +1,37 @@
 import random
 
 
-def setup(height, width, maze, walls):
+def setup(height, length, maze, walls):
+    """
+    This function takes care of the first two steps of Prim's algorithm:
+    1. Start with a grid full of walls
+    2. Pick a cell, mark it as part of the maze, and add its walls to a list of walls
+    :param height: desired maze height
+    :param length: desired maze length
+    :param maze: matrix representing cells of the maze
+    :param walls: list of walls
+    :return: no return, just modifies the input maze and list of walls
+    """
     # Mark everything as untouched
     for i in range(0, height):
-        line = []
-        for j in range(0, width):
-            line.append('u')
-        maze.append(line)
+        row = []
+        for j in range(0, length):
+            row.append('u')
+        maze.append(row)
 
     # Randomize starting point for first path
-    starting_height = int(random.random() * height)
-    starting_width = int(random.random() * width)
-    if starting_height == 0:
-        starting_height += 1
-    if starting_height == height - 1:
-        starting_height -= 1
-    if starting_width == 0:
-        starting_width += 1
-    if starting_width == width - 1:
-        starting_width -= 1
+    start_h = random.randint(1, height - 1)
+    start_l = random.randint(1, length - 1)
 
     # create first path block and add its wall coordinates to list
-    maze[starting_height][starting_width] = 1
-    walls.append([starting_height - 1, starting_width])
-    walls.append([starting_height, starting_width - 1])
-    walls.append([starting_height, starting_width + 1])
-    walls.append([starting_height + 1, starting_width])
+    maze[start_h][start_l] = 1
+    walls.append([start_h - 1, start_l])
+    walls.append([start_h, start_l - 1])
+    walls.append([start_h, start_l + 1])
+    walls.append([start_h + 1, start_l])
 
-    # mark walls in actual maze as 0
-    maze[starting_height - 1][starting_width] = 0
-    maze[starting_height][starting_width - 1] = 0
-    maze[starting_height][starting_width + 1] = 0
-    maze[starting_height + 1][starting_width] = 0
+    # mark cells surrounding original in actual maze as 0 to represent walls
+    maze[start_h - 1][start_l] = 0
+    maze[start_h][start_l - 1] = 0
+    maze[start_h][start_l + 1] = 0
+    maze[start_h + 1][start_l] = 0
