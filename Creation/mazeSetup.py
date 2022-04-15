@@ -20,8 +20,8 @@ def setup(height, length, maze, walls):
         maze.append(row)
 
     # Randomize starting point for first path
-    start_h = random.randint(1, height - 1)
-    start_l = random.randint(1, length - 1)
+    start_h = random.randint(1, height - 2)
+    start_l = random.randint(1, length - 2)
 
     # create first path block and add its wall coordinates to list
     maze[start_h][start_l] = 1
