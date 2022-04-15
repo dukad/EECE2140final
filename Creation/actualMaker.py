@@ -2,6 +2,7 @@ import random
 from Creation import surroundings as surr
 from Creation import deleteWall as delWall
 
+
 def maker(height, length, maze, walls):
     while walls:
         # get random wall
@@ -138,7 +139,7 @@ def maker(height, length, maze, walls):
         # Delete the wall from the list regardless
         delWall.del_wall(r_wall, walls)
 
-    # Mark all untouched points as walls
+    # Mark all remaining untouched points as walls
     for i in range(0, height):
         for j in range(0, length):
             if maze[i][j] == 'u':
@@ -146,11 +147,13 @@ def maker(height, length, maze, walls):
 
     # Make start
     for i in range(0, length):
+        # Go through top row of maze to find a place to insert a start
         if maze[1][i] == 1:
             maze[0][i] = 1
             break
     # Make end
     for i in range(length - 1, 0, -1):
+        # Go through bottom row of maze to find a place to end
         if maze[height - 2][i] == 1:
             maze[height - 1][i] = 1
             break
