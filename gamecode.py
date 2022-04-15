@@ -1,8 +1,7 @@
 import pygame
-from cellclasses import Cell, Character
+from cellclasses import Character
 import colors as c
 from gamefunctions import create_a_maze
-import datetime as dt
 from timer import Timer
 
 # pg code!
@@ -19,9 +18,11 @@ pygame.display.set_icon(image)
 inputx = '50'
 inputy = '50'
 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
+points_earned = '--'
 
 with open('mazepoints.txt', 'r+') as f:
-    maze_points = int(f.read())
+    maze_points = int(f.readline())
+    highscore = int(f.readline())
 
 # initialize sizing and location of buttons and text boxes
 base_font = pygame.font.Font(None, 25)
@@ -43,6 +44,8 @@ while running:
         if event.type == pygame.QUIT:
             with open('mazepoints.txt', 'w') as f:
                 f.write(str(maze_points))
+                f.write('\n')
+                f.write(str(highscore))
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
@@ -79,7 +82,10 @@ while running:
                 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
                 timer.reset()
             if solve_the_maze.collidepoint(event.pos):
-                maze_points += (len(maze)*len(maze[0])//10)//max(timer.time_in_secs(), 1)
+                points_earned = (len(maze) * len(maze[0])) // max(timer.time_in_secs(), 1)
+                if highscore < points_earned:
+                    highscore = points_earned
+                maze_points += points_earned
                 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension,
                                                                                                     int(inputx),
                                                                                                     int(inputy))
@@ -128,7 +134,7 @@ while running:
     screen.blit(ydimension, (ydimensions_rect.x + 5, ydimensions_rect.y - 20))
 
     # code for maze points
-    fontsize = min(int(350/len(str(maze_points))), 100)
+    fontsize = min(int(300/len(str(maze_points))), 100)
     number_font = pygame.font.Font(None, fontsize)
     textcentering = gamedimension + extra_space/2 - (6/35*fontsize*len(str(maze_points)))
     mazetext = number_font.render(str(maze_points), True, c.black)
@@ -136,22 +142,41 @@ while running:
     mazepointstext = base_font.render('Points:', True, c.black)
     screen.blit(mazepointstext, (gamedimension + 75, 300))
 
+    #code for highscore
+    fontsize2 = min(int(150 / len(str(highscore))), 100)
+    number_font2 = pygame.font.Font(None, fontsize2)
+    textcentering2 = gamedimension + extra_space / 2 - (6 / 35 * fontsize2 * len(str(highscore)))
+    hightext = number_font2.render(str(highscore), True, c.black)
+    screen.blit(hightext, (textcentering2, 475))
+    highscoretext = base_font.render('Highscore:', True, c.black)
+    screen.blit(highscoretext, (gamedimension + 65, 450))
+
+    # code for latestscore
+    fontsize3 = min(int(150 / len(str(points_earned))), 100)
+    number_font3 = pygame.font.Font(None, fontsize3)
+    textcentering3 = gamedimension + extra_space / 2 - (6 / 35 * fontsize3 * len(str(points_earned))) +15
+    latesttext = number_font3.render(str(points_earned), True, c.black)
+    screen.blit(latesttext, (textcentering3, 550))
+    latestpointstext = base_font.render('Last Score:', True, c.black)
+    screen.blit(latestpointstext, (gamedimension + 65, 525))
+
     # code for timer
     timerfont = pygame.font.Font(None, 50)
     timertext = base_font.render('Time:', True, c.black)
-    screen.blit(timertext, (gamedimension + 80, 400))
+    screen.blit(timertext, (gamedimension + 80, 375))
     timernumbs = timerfont.render(str(timer.time())[:7], True, c.black)
-    screen.blit(timernumbs, (gamedimension + 50, 425))
+    screen.blit(timernumbs, (gamedimension + 50, 400))
 
     # Flip screen? apparently this is necessary
     pygame.display.flip()
 
     if (character.ymaze, character.xmaze) == (len(maze) , endcell + 1):
-        maze_points += (len(maze)*len(maze[0])//10)//max(timer.time_in_secs(), 1)
+        points_earned = (len(maze)*len(maze[0]))//max(timer.time_in_secs(), 1)
+        if highscore < points_earned:
+            highscore = points_earned
+        maze_points += points_earned
         allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
         timer.reset()
 
     # Pause
-    clock.tick(5)
-
-
+    clock.tick(100)
