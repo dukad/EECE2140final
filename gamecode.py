@@ -83,6 +83,10 @@ while running:
             else:
                 inytextbox = False
             if create_new_maze.collidepoint(event.pos):
+                if int(inputx) < 3:
+                    inputx = '3'
+                if int(inputy) < 3:
+                    inputy = '3'
                 allspriteslist, celldimensions, character, maze, startcell, endcell = \
                     create_a_maze(gamedimension, int(inputx), int(inputy))
                 timer.reset()
