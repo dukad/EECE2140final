@@ -21,7 +21,7 @@ allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_m
                                                                                     int(inputy))
 points_earned = ' '
 cells = pygame.sprite.Group()
-
+solved = False
 
 with open('mazepoints.txt', 'r+') as f:
     maze_points = int(f.readline())
@@ -87,8 +87,10 @@ while running:
                     create_a_maze(gamedimension, int(inputx), int(inputy))
                 timer.reset()
                 cells.empty()
+                solved = False
             if solve_the_maze.collidepoint(event.pos):
-                (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell),
+                if not solved:
+                    (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell),
                                              clock)
 
     allspriteslist.remove(character)
@@ -181,6 +183,7 @@ while running:
                                                                                             int(inputx), int(inputy))
         timer.reset()
         cells.empty()
+        solved = False
 
     # Pause
     clock.tick(100)
