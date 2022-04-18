@@ -3,7 +3,7 @@ from cellclasses import Cell, Character
 import colors as c
 from Creation import actualMaker
 from Creation import mazeSetup
-from colors import lightgreen
+from colors import lightgreen, blue
 
 def create_a_maze(gamedimension, width, height):
     allspriteslist = pygame.sprite.Group()  # creates a group of items that will be drawn at the end
@@ -66,7 +66,7 @@ def fill_maze_red(screen, celldimensions, startcell, color, realstartcell):
         cells.append(pygame.Rect(20 + celldimensions*current_cell.xmaze, 20 + celldimensions*current_cell.ymaze, celldimensions, celldimensions))
         for i in range(len(cells)):
             pygame.draw.rect(screen, color, cells[i])
-        list_of_cells.append(Cell(lightgreen, current_cell.xmaze + 1, current_cell.ymaze + 1, celldimensions))
+        list_of_cells.append(Cell(blue, current_cell.xmaze + 1, current_cell.ymaze + 1, celldimensions))
         current_cell = current_cell.prev
     return list_of_cells
 
@@ -89,13 +89,14 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
             loc = fill_maze_red(screen, celldimensions, current_cell, lightgreen, true)
             for cell in loc:
                 cellslist.add(cell)
+            cellslist.add(Cell(blue, true[1] + 1, true[0] + 1, celldimensions))
             return True, cellslist
         elif len(available_cells) > 1:
             maze[current_cell.ymaze][current_cell.xmaze] = 0
             current_cell.Node = True
             for direction in available_cells:
                 if direction == 'd':
-                    solved, cells =  solve_maze(screen, maze, celldimensions, (current_cell.ymaze + 1,current_cell.xmaze), endcell, clock, prevnode=current_cell, truestart=true)
+                    solved, cells = solve_maze(screen, maze, celldimensions, (current_cell.ymaze + 1,current_cell.xmaze), endcell, clock, prevnode=current_cell, truestart=true)
                     if solved == True:
                         cellslist = cells
                         return True, cellslist

@@ -18,7 +18,8 @@ pygame.display.set_icon(image)
 inputx = '50'
 inputy = '50'
 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
-points_earned = '--'
+points_earned = ' '
+cells = pygame.sprite.Group()
 
 
 with open('mazepoints.txt', 'r+') as f:
@@ -137,16 +138,16 @@ while running:
     screen.blit(ydimension, (ydimensions_rect.x + 5, ydimensions_rect.y - 20))
 
     # code for maze points
-    fontsize = min(int(300/len(str(maze_points))), 100)
+    fontsize = min(int(300/len(str(maze_points))), 75)
     number_font = pygame.font.Font(None, fontsize)
     textcentering = gamedimension + extra_space/2 - (6/35*fontsize*len(str(maze_points)))
     mazetext = number_font.render(str(maze_points), True, c.black)
-    screen.blit(mazetext, (textcentering, 325))
+    screen.blit(mazetext, (textcentering, 320))
     mazepointstext = base_font.render('Points:', True, c.black)
     screen.blit(mazepointstext, (gamedimension + 75, 300))
 
     #code for highscore
-    fontsize2 = min(int(150 / len(str(highscore))), 100)
+    fontsize2 = min(int(150 / len(str(highscore))), 75)
     number_font2 = pygame.font.Font(None, fontsize2)
     textcentering2 = gamedimension + extra_space / 2 - (6 / 35 * fontsize2 * len(str(highscore)))
     hightext = number_font2.render(str(highscore), True, c.black)
@@ -157,11 +158,11 @@ while running:
     # code for latestscore
     fontsize3 = min(int(150 / len(str(points_earned))), 100)
     number_font3 = pygame.font.Font(None, fontsize3)
-    textcentering3 = gamedimension + extra_space / 2 - (6 / 35 * fontsize3 * len(str(points_earned))) +15
+    textcentering3 = gamedimension + extra_space / 2 - (6 / 35 * fontsize3 * len(str(points_earned)))
     latesttext = number_font3.render(str(points_earned), True, c.black)
     screen.blit(latesttext, (textcentering3, 550))
     latestpointstext = base_font.render('Last Score:', True, c.black)
-    screen.blit(latestpointstext, (gamedimension + 65, 525))
+    screen.blit(latestpointstext, (gamedimension + 60, 525))
 
     # code for timer
     timerfont = pygame.font.Font(None, 50)
