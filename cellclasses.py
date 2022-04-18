@@ -1,18 +1,25 @@
 import pygame
-import colors as c
 
 class Cell(pygame.sprite.Sprite):
     def __init__(self, color, x, y, dimension):
         super().__init__()
         self.dimension = dimension
         self.color = color
-
         self.image = pygame.Surface([self.dimension, self.dimension])
         self.image.fill(self.color)
-
+        self.xmaze = x
+        self.ymaze = y
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = (self.xmaze - 1) * self.dimension + 20
+        self.rect.y = (self.ymaze - 1) * self.dimension + 20
+        self.prev = None
+        self.next = None
+        self.Node = False
+
+    def __str__(self):
+        return f'{self.color} cell at {self.ymaze},{self.xmaze} of dimension {self.dimension}'
+
+
 
 class Character(pygame.sprite.Sprite):
     def __init__(self, color, xmaze, ymaze, dimension):

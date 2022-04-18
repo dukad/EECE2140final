@@ -1,7 +1,7 @@
 import pygame
-from cellclasses import Character
+from cellclasses import Character, Cell
 import colors as c
-from gamefunctions import create_a_maze
+from gamefunctions import create_a_maze, solve_maze
 from timer import Timer
 
 # pg code!
@@ -20,6 +20,7 @@ inputy = '50'
 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
 points_earned = '--'
 
+
 with open('mazepoints.txt', 'r+') as f:
     maze_points = int(f.readline())
     highscore = int(f.readline())
@@ -37,6 +38,8 @@ running = True
 inxtextbox = False
 inytextbox = False
 timer = Timer()
+
+
 
 while running:
 
@@ -81,25 +84,25 @@ while running:
             if create_new_maze.collidepoint(event.pos):
                 allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
                 timer.reset()
+                cells.empty()
             if solve_the_maze.collidepoint(event.pos):
-                points_earned = (len(maze) * len(maze[0])) // max(timer.time_in_secs(), 1)
-                if highscore < points_earned:
-                    highscore = points_earned
-                maze_points += points_earned
-                allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension,
-                                                                                                    int(inputx),
-                                                                                                    int(inputy))
-                timer.reset()
+                (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell), clock)
+                print(cells)
+
 
     allspriteslist.remove(character)
     character = Character(c.lightgreen, character.xmaze, character.ymaze, celldimensions)
-
     allspriteslist.add(character)
 
     # -- Draw everything
     # Clear screen
     screen.fill(c.white)
     allspriteslist.draw(screen)
+    if 'cells' in locals():
+
+        cells.draw(screen)
+
+    #draw solved cells
 
     # code for boxes
     #textbox for x dimension
@@ -177,6 +180,7 @@ while running:
         maze_points += points_earned
         allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
         timer.reset()
+        cells.empty()
 
     # Pause
     clock.tick(100)
