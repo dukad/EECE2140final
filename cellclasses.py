@@ -1,5 +1,6 @@
 import pygame
 
+
 class Cell(pygame.sprite.Sprite):
     def __init__(self, color, x, y, dimension):
         super().__init__()
@@ -18,7 +19,6 @@ class Cell(pygame.sprite.Sprite):
 
     def __str__(self):
         return f'{self.color} cell at {self.ymaze},{self.xmaze} of dimension {self.dimension}'
-
 
 
 class Character(pygame.sprite.Sprite):

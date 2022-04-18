@@ -5,6 +5,7 @@ from Creation import actualMaker
 from Creation import mazeSetup
 from colors import lightgreen, blue
 
+
 def create_a_maze(gamedimension, width, height):
     allspriteslist = pygame.sprite.Group()  # creates a group of items that will be drawn at the end
     maze = []
@@ -12,7 +13,7 @@ def create_a_maze(gamedimension, width, height):
     mazeSetup.setup(height, width, maze, walls)
     actualMaker.maker(height, width, maze, walls)
     g2dimensions = gamedimension
-    celldimensions = min((g2dimensions) / len(maze[1]), (g2dimensions) / len(maze))
+    celldimensions = min(g2dimensions / len(maze[1]), g2dimensions / len(maze))
     y = 1
     for row in maze:
         x = 1
@@ -34,9 +35,9 @@ def create_a_maze(gamedimension, width, height):
         if cells[1] == 1:
             endcell = cells[0]
 
-    x = (startcell) + 1
+    x = startcell + 1
     y = 1
-    character = Character(c.lightgreen, x, y, celldimensions)
+    character = Character(blue, x, y, celldimensions)
     allspriteslist.add(character)
 
     return allspriteslist, celldimensions, character, maze, startcell, endcell
@@ -63,17 +64,18 @@ def fill_maze_red(screen, celldimensions, startcell, color, realstartcell):
     cells = []
     list_of_cells = []
     while (current_cell.ymaze, current_cell.xmaze) != realstartcell:
-        cells.append(pygame.Rect(20 + celldimensions*current_cell.xmaze, 20 + celldimensions*current_cell.ymaze, celldimensions, celldimensions))
+        cells.append(pygame.Rect(20 + celldimensions*current_cell.xmaze, 20 + celldimensions*current_cell.ymaze,
+                                 celldimensions, celldimensions))
         for i in range(len(cells)):
             pygame.draw.rect(screen, color, cells[i])
-        list_of_cells.append(Cell(blue, current_cell.xmaze + 1, current_cell.ymaze + 1, celldimensions))
+        list_of_cells.append(Cell(lightgreen, current_cell.xmaze + 1, current_cell.ymaze + 1, celldimensions))
         current_cell = current_cell.prev
     return list_of_cells
 
 
 def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode=None, truestart=None):
     cellslist = pygame.sprite.Group()
-    if truestart == None:
+    if truestart is None:
         true = startcell
     else:
         true = truestart
@@ -81,7 +83,8 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
     current_cell = Cell(pygame.Color('Yellow'), startcell[1], startcell[0], celldimensions)
     current_cell.prev = prevnode
     while in_maze:
-        newcell = pygame.Rect(20 + celldimensions*current_cell.xmaze, 20 + celldimensions*current_cell.ymaze, celldimensions, celldimensions)
+        newcell = pygame.Rect(20 + celldimensions*current_cell.xmaze, 20 + celldimensions*current_cell.ymaze,
+                              celldimensions, celldimensions)
         pygame.draw.rect(screen, current_cell.color, newcell)
         pygame.display.flip()
         available_cells = cell_available(current_cell, maze)
@@ -89,36 +92,38 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
             loc = fill_maze_red(screen, celldimensions, current_cell, lightgreen, true)
             for cell in loc:
                 cellslist.add(cell)
-            cellslist.add(Cell(blue, true[1] + 1, true[0] + 1, celldimensions))
+            cellslist.add(Cell(lightgreen, true[1] + 1, true[0] + 1, celldimensions))
             return True, cellslist
         elif len(available_cells) > 1:
             maze[current_cell.ymaze][current_cell.xmaze] = 0
             current_cell.Node = True
             for direction in available_cells:
                 if direction == 'd':
-                    solved, cells = solve_maze(screen, maze, celldimensions, (current_cell.ymaze + 1,current_cell.xmaze), endcell, clock, prevnode=current_cell, truestart=true)
-                    if solved == True:
+                    solved, cells = solve_maze(screen, maze, celldimensions,
+                                               (current_cell.ymaze + 1, current_cell.xmaze), endcell, clock,
+                                               prevnode=current_cell, truestart=true)
+                    if solved:
                         cellslist = cells
                         return True, cellslist
                 if direction == 'r':
                     solved, cells = solve_maze(screen, maze, celldimensions,
                                                (current_cell.ymaze, current_cell.xmaze + 1), endcell, clock,
                                                prevnode=current_cell, truestart=true)
-                    if solved == True:
+                    if solved:
                         cellslist = cells
                         return True, cellslist
                 if direction == 'u':
                     solved, cells = solve_maze(screen, maze, celldimensions,
                                                (current_cell.ymaze - 1, current_cell.xmaze), endcell, clock,
                                                prevnode=current_cell, truestart=true)
-                    if solved == True:
+                    if solved:
                         cellslist = cells
                         return True, cellslist
                 if direction == 'l':
                     solved, cells = solve_maze(screen, maze, celldimensions,
                                                (current_cell.ymaze, current_cell.xmaze - 1), endcell, clock,
                                                prevnode=current_cell, truestart=true)
-                    if solved == True:
+                    if solved:
                         cellslist = cells
                         return True, cellslist
         elif len(available_cells) == 0:
@@ -150,4 +155,5 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
                 current_cell.next = nextcell
                 current_cell.next.prev = current_cell
                 current_cell = current_cell.next
+        clock.tick(10000)
     return False, cellslist

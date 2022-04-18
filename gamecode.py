@@ -1,5 +1,5 @@
 import pygame
-from cellclasses import Character, Cell
+from cellclasses import Character
 import colors as c
 from gamefunctions import create_a_maze, solve_maze
 from timer import Timer
@@ -10,14 +10,15 @@ pygame.init()
 gamedimension = 600
 extra_space = 200
 screenwidth = gamedimension + extra_space
-screen = pygame.display.set_mode((screenwidth, gamedimension + 50)) # input dimensions of the game
+screen = pygame.display.set_mode((screenwidth, gamedimension + 50))  # input dimensions of the game
 image = pygame.image.load('mazeimage.jpg')
-screen.fill(pygame.Color(c.white)) # sets the background colo
-pygame.display.set_caption('Maze Game!') # This is the window of the game
+screen.fill(pygame.Color(c.white))  # sets the background colo
+pygame.display.set_caption('Maze Game!')  # This is the window of the game
 pygame.display.set_icon(image)
 inputx = '50'
 inputy = '50'
-allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
+allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx),
+                                                                                    int(inputy))
 points_earned = ' '
 cells = pygame.sprite.Group()
 
@@ -39,7 +40,6 @@ running = True
 inxtextbox = False
 inytextbox = False
 timer = Timer()
-
 
 
 while running:
@@ -83,16 +83,16 @@ while running:
             else:
                 inytextbox = False
             if create_new_maze.collidepoint(event.pos):
-                allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
+                allspriteslist, celldimensions, character, maze, startcell, endcell = \
+                    create_a_maze(gamedimension, int(inputx), int(inputy))
                 timer.reset()
                 cells.empty()
             if solve_the_maze.collidepoint(event.pos):
-                (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell), clock)
-                print(cells)
-
+                (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell),
+                                             clock)
 
     allspriteslist.remove(character)
-    character = Character(c.lightgreen, character.xmaze, character.ymaze, celldimensions)
+    character = Character(c.blue, character.xmaze, character.ymaze, celldimensions)
     allspriteslist.add(character)
 
     # -- Draw everything
@@ -103,10 +103,8 @@ while running:
 
         cells.draw(screen)
 
-    #draw solved cells
-
     # code for boxes
-    #textbox for x dimension
+    # textbox for x dimension
     pygame.draw.rect(screen, pygame.Color('gray'), xdimensions_rect)
     xdimbox = base_font.render(inputx, True, (255, 255, 255))
     screen.blit(xdimbox, (xdimensions_rect.x + 5, xdimensions_rect.y + 3))
@@ -146,7 +144,7 @@ while running:
     mazepointstext = base_font.render('Points:', True, c.black)
     screen.blit(mazepointstext, (gamedimension + 75, 300))
 
-    #code for highscore
+    # code for highscore
     fontsize2 = min(int(150 / len(str(highscore))), 75)
     number_font2 = pygame.font.Font(None, fontsize2)
     textcentering2 = gamedimension + extra_space / 2 - (6 / 35 * fontsize2 * len(str(highscore)))
@@ -174,12 +172,13 @@ while running:
     # Flip screen? apparently this is necessary
     pygame.display.flip()
 
-    if (character.ymaze, character.xmaze) == (len(maze) , endcell + 1):
+    if (character.ymaze, character.xmaze) == (len(maze), endcell + 1):
         points_earned = (len(maze)*len(maze[0]))//max(timer.time_in_secs(), 1)
         if highscore < points_earned:
             highscore = points_earned
         maze_points += points_earned
-        allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension, int(inputx), int(inputy))
+        allspriteslist, celldimensions, character, maze, startcell, endcell = create_a_maze(gamedimension,
+                                                                                            int(inputx), int(inputy))
         timer.reset()
         cells.empty()
 
