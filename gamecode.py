@@ -43,7 +43,7 @@ timer = Timer()
 
 
 while running:
-
+    # keep running this code until the game is quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             with open('mazepoints.txt', 'w') as f:
@@ -72,30 +72,30 @@ while running:
                         inputy = inputy[:-1]
                     elif event.unicode.isdigit():
                         inputy += event.unicode
-
+        # if the player clicks
         if event.type == pygame.MOUSEBUTTONDOWN:
             if xdimensions_rect.collidepoint(event.pos):
-                inxtextbox = True
+                inxtextbox = True  # change to entering in text box
             else:
                 inxtextbox = False
             if ydimensions_rect.collidepoint(event.pos):
                 inytextbox = True
             else:
                 inytextbox = False
-            if create_new_maze.collidepoint(event.pos):
+            if create_new_maze.collidepoint(event.pos):  # if user clicks new maze
                 if int(inputx) < 3:
                     inputx = '3'
                 if int(inputy) < 3:
                     inputy = '3'
                 allspriteslist, celldimensions, character, maze, startcell, endcell = \
-                    create_a_maze(gamedimension, int(inputx), int(inputy))
+                    create_a_maze(gamedimension, int(inputx), int(inputy))  # call function to generate a new maze
                 timer.reset()
                 cells.empty()
                 solved = False
             if solve_the_maze.collidepoint(event.pos):
                 if not solved:
-                    (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell), (len(maze) - 1, endcell),
-                                             clock)
+                    (solved, cells) = solve_maze(screen, maze, celldimensions, (0, startcell),
+                                                 (len(maze) - 1, endcell), clock)
 
     allspriteslist.remove(character)
     character = Character(c.blue, character.xmaze, character.ymaze, celldimensions)
