@@ -21,7 +21,7 @@ def maker(height, length, maze, walls):
                     # Mark new walls in maze:
                     # make sure not a top-most wall to avoid index error:
                     if r_wall[0] != 0:
-                        # As long as bottom cell is not already a path, make it a wall:
+                        # As long as top cell is not already a path, make it a wall:
                         if maze[r_wall[0] - 1][r_wall[1]] != 1:
                             maze[r_wall[0] - 1][r_wall[1]] = 0
                         # Add this new wall to the list of walls as long as it isn't already in there
@@ -30,7 +30,7 @@ def maker(height, length, maze, walls):
 
                     # Make sure not a bottom-most wall to avoid index error
                     if r_wall[0] != height - 1:
-                        # As long as the top cell is not already a path, make it a wall
+                        # As long as the bottom cell is not already a path, make it a wall
                         if maze[r_wall[0] + 1][r_wall[1]] != 1:
                             maze[r_wall[0] + 1][r_wall[1]] = 0
                         # Add this new wall to the list of walls as long as it isn't already in there
@@ -52,7 +52,7 @@ def maker(height, length, maze, walls):
 
         # Make sure not a top-most cell to avoid index error:
         if r_wall[0] != 0:
-            # if bottom cell is untouched and top cell is a path:
+            # if top cell is untouched and bottom cell is a path:
             if maze[r_wall[0] - 1][r_wall[1]] == 'u' and maze[r_wall[0] + 1][r_wall[1]] == 1:
 
                 s_cells = surr.surr_count(r_wall, maze)
@@ -82,7 +82,7 @@ def maker(height, length, maze, walls):
 
         # Make sure not a bottom-most cell to avoid index error:
         if r_wall[0] != height - 1:
-            # if top cell is untouched and bottom cell is a path:
+            # if bottom cell is untouched and top cell is a path:
             if maze[r_wall[0] + 1][r_wall[1]] == 'u' and maze[r_wall[0] - 1][r_wall[1]] == 1:
 
                 s_cells = surr.surr_count(r_wall, maze)
