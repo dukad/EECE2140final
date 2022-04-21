@@ -12,7 +12,7 @@ extra_space = 200
 screenwidth = gamedimension + extra_space
 screen = pygame.display.set_mode((screenwidth, gamedimension + 50))  # input dimensions of the game
 image = pygame.image.load('mazeimage.jpg')
-screen.fill(pygame.Color(c.white))  # sets the background colo
+screen.fill(pygame.Color(c.white))  # sets the background color
 pygame.display.set_caption('Maze Game!')  # This is the window of the game
 pygame.display.set_icon(image)
 inputx = '50'

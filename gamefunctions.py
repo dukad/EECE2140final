@@ -69,12 +69,12 @@ def cell_available(cell, maze):
     try:
         if maze[cell.ymaze + 1][cell.xmaze] == 1:
             availible.append('d')
+        if maze[cell.ymaze][cell.xmaze + 1] == 1:
+            availible.append('r')
         if maze[cell.ymaze - 1][cell.xmaze] == 1:
             availible.append('u')
         if maze[cell.ymaze][cell.xmaze - 1] == 1:
             availible.append('l')
-        if maze[cell.ymaze][cell.xmaze + 1] == 1:
-            availible.append('r')
     # pass index errors because that implies you are on the edge of the maze, and in that case, the direction
     # is not available
     except IndexError:
@@ -169,6 +169,16 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
                     if solved:
                         cellslist = cells
                         return True, cellslist
+                if direction == 'u':
+                    solved, cells = solve_maze(screen, maze, celldimensions,
+                                               (current_cell.ymaze - 1, current_cell.xmaze), endcell, clock,
+                                               prevnode=current_cell, truestart=true)
+                    if solved:
+                        cellslist = cells
+                        return True, cellslist
+                    elif direction == available_cells[-1]:
+                        maze[current_cell.ymaze][current_cell.xmaze] = 0
+                        fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
                 if direction == 'r':
                     solved, cells = solve_maze(screen, maze, celldimensions,
                                                (current_cell.ymaze, current_cell.xmaze + 1), endcell, clock,
@@ -189,16 +199,7 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
                     elif direction == available_cells[-1]:
                         maze[current_cell.ymaze][current_cell.xmaze] = 0
                         fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
-                if direction == 'u':
-                    solved, cells = solve_maze(screen, maze, celldimensions,
-                                               (current_cell.ymaze - 1, current_cell.xmaze), endcell, clock,
-                                               prevnode=current_cell, truestart=true)
-                    if solved:
-                        cellslist = cells
-                        return True, cellslist
-                    elif direction == available_cells[-1]:
-                        maze[current_cell.ymaze][current_cell.xmaze] = 0
-                        fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
+
         # if there are no cells, color this path red
         elif len(available_cells) == 0:
             maze[current_cell.ymaze][current_cell.xmaze] = 0
@@ -230,5 +231,5 @@ def solve_maze(screen, maze, celldimensions, startcell, endcell, clock, prevnode
                 current_cell.next = nextcell
                 current_cell.next.prev = current_cell
                 current_cell = current_cell.next
-        clock.tick(500)
+        clock.tick(5000)
     return False, cellslist
