@@ -6,7 +6,7 @@ from Creation import mazeSetup
 from colors import lightgreen, blue
 
 
-class Maze:
+class MazeVisual:
     def __init__(self, gamedimension, width, height):
         self.gamedimension = gamedimension
         self.width = width
