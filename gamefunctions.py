@@ -22,10 +22,10 @@ class MazeVisual(Maze):
         self.maze.setup()
         self.maze.maker()
         g2dimensions = self.gamedimension
-        celldimensions = min(g2dimensions / len(maze[1]), g2dimensions / len(maze))
+        celldimensions = min(g2dimensions / self.maze.length, g2dimensions / self.maze.height)
         # Iterate through the maze, creating a cell for each wall or path
         y = 1
-        for row in maze:
+        for row in self.maze.maze:
             x = 1
             for val in row:
                 if val == 0:
@@ -37,11 +37,11 @@ class MazeVisual(Maze):
             y += 1
         # find where the end cell and start cell is in the maze
         startcell = None
-        for cells in enumerate(maze[0]):
+        for cells in enumerate(self.maze.maze[0]):
             if cells[1] == 1:
                 startcell = cells[0]
         endcell = None
-        for cells in enumerate(maze[-1]):
+        for cells in enumerate(self.maze.maze[-1]):
             if cells[1] == 1:
                 endcell = cells[0]
 
@@ -50,8 +50,8 @@ class MazeVisual(Maze):
         # create the character and add it to the sprite group
         self.character = Character(blue, x, y, celldimensions)
         allspriteslist.add(self.character)
-        self.maze = maze
         self.startcell = startcell
+        maze = self.maze.maze
         self.endcell = endcell
         self.allspriteslist = allspriteslist
         return allspriteslist, celldimensions, self.character, maze, startcell, endcell
