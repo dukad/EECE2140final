@@ -1,17 +1,14 @@
 import pygame
 from cellclasses import Cell, Character
 import colors as c
-from Creation import actualMaker
-from Creation import mazeSetup
+from maze import Maze
 from colors import lightgreen, blue
 
 
-class MazeVisual:
+class MazeVisual(Maze):
     def __init__(self, gamedimension, width, height):
         self.gamedimension = gamedimension
-        self.width = width
-        self.height = height
-        self.maze = None
+        self.maze = Maze(width, height)
         self.allspriteslist = None
         self.character = None
         self.startcell = None
@@ -22,10 +19,8 @@ class MazeVisual:
         This function creates and draws a maze based on the input width and height dimensions
         """
         allspriteslist = pygame.sprite.Group()  # creates a group of items that will be drawn at the end
-        maze = []
-        walls = []
-        mazeSetup.setup(self.height, self.width, maze, walls)
-        actualMaker.maker(self.height, self.width, maze, walls)
+        self.maze.setup()
+        self.maze.maker()
         g2dimensions = self.gamedimension
         celldimensions = min(g2dimensions / len(maze[1]), g2dimensions / len(maze))
         # Iterate through the maze, creating a cell for each wall or path
