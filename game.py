@@ -3,7 +3,7 @@ class Game:
         import pygame
         from cellclasses import Character
         import colors as c
-        from gamefunctions import Maze, SolvingAlgorithm
+        from gamefunctions import MazeVisual, SolvingAlgorithm
         from timer import Timer
 
         # pg code!
@@ -19,7 +19,7 @@ class Game:
         pygame.display.set_icon(image)
         inputx = '50'
         inputy = '50'
-        newmaze = Maze(gamedimension, int(inputx), int(inputy))
+        newmaze = MazeVisual(gamedimension, int(inputx), int(inputy))
         allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
         points_earned = ' '
         cells = pygame.sprite.Group()
@@ -88,7 +88,7 @@ class Game:
                             inputx = '3'
                         if int(inputy) < 3:
                             inputy = '3'
-                        newmaze = Maze(gamedimension, int(inputx), int(inputy))
+                        newmaze = MazeVisual(gamedimension, int(inputx), int(inputy))
                         allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
                         timer.reset()
                         cells.empty()
@@ -184,7 +184,7 @@ class Game:
                 if highscore < points_earned:
                     highscore = points_earned
                 maze_points += points_earned
-                newmaze = Maze(gamedimension, int(inputx), int(inputy))
+                newmaze = MazeVisual(gamedimension, int(inputx), int(inputy))
                 allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
                 timer.reset()
                 cells.empty()
