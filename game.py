@@ -20,7 +20,8 @@ class Game:
         inputx = '50'
         inputy = '50'
         newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-        allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+        # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+        character = newmaze.create_a_maze()
         self.points_earned = ' '
         cells = pygame.sprite.Group()
         solved = False
@@ -54,13 +55,13 @@ class Game:
                     running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        character.move('left', maze)
+                        character.move('left', newmaze.maze)
                     if event.key == pygame.K_RIGHT:
-                        character.move('right', maze)
+                        character.move('right', newmaze.maze)
                     if event.key == pygame.K_UP:
-                        character.move('up', maze)
+                        character.move('up', newmaze.maze)
                     if event.key == pygame.K_DOWN:
-                        character.move('down', maze)
+                        character.move('down', newmaze.maze)
                     if inxtextbox:
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_BACKSPACE:
@@ -89,24 +90,25 @@ class Game:
                         if int(inputy) < 3:
                             inputy = '3'
                         newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-                        allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+                        # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+                        character = newmaze.create_a_maze()
                         timer.reset()
                         cells.empty()
                         solved = False
                     if solve_the_maze.collidepoint(event.pos):
                         if not solved:
-                            solvealgo = SolvingAlgorithm(maze, (0, startcell), (len(maze) - 1, endcell))
-                            (solved, cells) = solvealgo.solve_maze(self.screen, maze, celldimensions, (0, startcell),
-                                                                   (len(maze) - 1, endcell), self.clock, solvealgo)
+                            solvealgo = SolvingAlgorithm(newmaze.maze, (0, newmaze.startcell), (len(newmaze.maze) - 1, newmaze.endcell))
+                            (solved, cells) = solvealgo.solve_maze(self.screen, newmaze.maze, newmaze.celldimensions, (0, newmaze.startcell),
+                                                                   (len(newmaze.maze) - 1, newmaze.endcell), self.clock, solvealgo)
 
-            allspriteslist.remove(character)
-            character = Character(c.blue, character.xmaze, character.ymaze, celldimensions)
-            allspriteslist.add(character)
+            newmaze.allspriteslist.remove(character)
+            character = Character(c.blue, character.xmaze, character.ymaze, newmaze.celldimensions)
+            newmaze.allspriteslist.add(character)
 
             # -- Draw everything
             # Clear screen
             self.screen.fill(c.white)
-            allspriteslist.draw(self.screen)
+            newmaze.allspriteslist.draw(self.screen)
             if 'cells' in locals():
                 cells.draw(self.screen)
 
@@ -179,13 +181,14 @@ class Game:
             # Flip screen? apparently this is necessary
             pygame.display.flip()
 
-            if (character.ymaze, character.xmaze) == (len(maze), endcell + 1):
-                self.points_earned = (len(maze) * len(maze[0])) // max(timer.time_in_secs(), 1)
+            if (character.ymaze, character.xmaze) == (len(newmaze.maze), newmaze.endcell + 1):
+                self.points_earned = (len(newmaze.maze) * len(newmaze.maze[0])) // max(timer.time_in_secs(), 1)
                 if highscore < self.points_earned:
                     highscore = self.points_earned
                 maze_points += self.points_earned
                 newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-                allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+                # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
+                character = newmaze.create_a_maze()
                 timer.reset()
                 cells.empty()
                 solved = False

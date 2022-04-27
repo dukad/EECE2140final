@@ -16,14 +16,15 @@ class MazeVisual(Maze):
         self.character = None
         self.startcell = None
         self.endcell = None
+        self.celldimensions = None
 
     def create_a_maze(self):
         """
         This function creates and draws a maze based on the input width and height dimensions
         """
         allspriteslist = pygame.sprite.Group()  # creates a group of items that will be drawn at the end
-        super().setup()
-        super().maker()
+        self.setup()
+        self.maker()
         g2dimensions = self.gamedimension
         celldimensions = min(g2dimensions / self.length, g2dimensions / self.height)
         # Iterate through the maze, creating a cell for each wall or path
@@ -54,10 +55,10 @@ class MazeVisual(Maze):
         self.character = Character(blue, x, y, celldimensions)
         allspriteslist.add(self.character)
         self.startcell = startcell
-        maze = self.maze
         self.endcell = endcell
+        self.celldimensions = celldimensions
         self.allspriteslist = allspriteslist
-        return allspriteslist, celldimensions, self.character, maze, startcell, endcell
+        return self.character
 
 
 class SolvingAlgorithm:
