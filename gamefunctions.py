@@ -6,9 +6,12 @@ from colors import lightgreen, blue
 
 
 class MazeVisual(Maze):
+    """
+    The MazeVisual class, a subclass of the Maze class, is used to display a maze in the GUI.
+    """
     def __init__(self, gamedimension, width, height):
+        super().__init__(height, width)
         self.gamedimension = gamedimension
-        self.maze = Maze(width, height)
         self.allspriteslist = None
         self.character = None
         self.startcell = None
@@ -19,13 +22,13 @@ class MazeVisual(Maze):
         This function creates and draws a maze based on the input width and height dimensions
         """
         allspriteslist = pygame.sprite.Group()  # creates a group of items that will be drawn at the end
-        self.maze.setup()
-        self.maze.maker()
+        super().setup()
+        super().maker()
         g2dimensions = self.gamedimension
-        celldimensions = min(g2dimensions / self.maze.length, g2dimensions / self.maze.height)
+        celldimensions = min(g2dimensions / self.length, g2dimensions / self.height)
         # Iterate through the maze, creating a cell for each wall or path
         y = 1
-        for row in self.maze.maze:
+        for row in self.maze:
             x = 1
             for val in row:
                 if val == 0:
@@ -37,11 +40,11 @@ class MazeVisual(Maze):
             y += 1
         # find where the end cell and start cell is in the maze
         startcell = None
-        for cells in enumerate(self.maze.maze[0]):
+        for cells in enumerate(self.maze[0]):
             if cells[1] == 1:
                 startcell = cells[0]
         endcell = None
-        for cells in enumerate(self.maze.maze[-1]):
+        for cells in enumerate(self.maze[-1]):
             if cells[1] == 1:
                 endcell = cells[0]
 
@@ -51,7 +54,7 @@ class MazeVisual(Maze):
         self.character = Character(blue, x, y, celldimensions)
         allspriteslist.add(self.character)
         self.startcell = startcell
-        maze = self.maze.maze
+        maze = self.maze
         self.endcell = endcell
         self.allspriteslist = allspriteslist
         return allspriteslist, celldimensions, self.character, maze, startcell, endcell
@@ -86,8 +89,7 @@ class SolvingAlgorithm:
             pass
         return availible
 
-    @staticmethod
-    def fill_maze_red(screen, celldimensions, startcell, color, realstartcell, solved=False):
+    def fill_maze_red(self, screen, celldimensions, startcell, color, solved=False):
 
         """
         fills a path a certain color going either back to the start of the maze, or until a node
@@ -99,6 +101,7 @@ class SolvingAlgorithm:
         :param solved: if the maze is completely solved
         :return: list_of_cells: a list of cells to continue drawing once the maze has been solved
         """
+        realstartcell = self.startcell
         first = True  # This variable is needed because if you call the function starting on a node, you still want
         # it to run
         current_cell = startcell  # where to start the process
@@ -158,7 +161,7 @@ class SolvingAlgorithm:
             available_cells = mazeobj.cell_available(current_cell)
             # if the maze is solved
             if (current_cell.ymaze, current_cell.xmaze) == endcell:
-                loc = mazeobj.fill_maze_red(screen, celldimensions, current_cell, lightgreen, true, solved=True)
+                loc = mazeobj.fill_maze_red(screen, celldimensions, current_cell, lightgreen, solved=True)
                 for cell in loc:
                     cellslist.add(cell)
                 cellslist.add(Cell(lightgreen, true[1] + 1, true[0] + 1, celldimensions))
@@ -185,7 +188,7 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
+                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
                     if direction == 'r':
                         solved, cells = mazeobj.solve_maze(screen, maze, celldimensions,
                                                    (current_cell.ymaze, current_cell.xmaze + 1), endcell, clock,
@@ -195,7 +198,7 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
+                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
                     if direction == 'l':
                         solved, cells = mazeobj.solve_maze(screen, maze, celldimensions,
                                                    (current_cell.ymaze, current_cell.xmaze - 1), endcell, clock,
@@ -205,12 +208,12 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
+                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
 
             # if there are no cells, color this path red
             elif len(available_cells) == 0:
                 maze[current_cell.ymaze][current_cell.xmaze] = 0
-                mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'), true)
+                mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
                 in_maze = False
             # if there's only one available cell, go to that cell
             elif len(available_cells) == 1:
