@@ -90,8 +90,7 @@ class SolvingAlgorithm:
             pass
         return availible
 
-    def fill_maze_red(self, screen, celldimensions, startcell, color, solved=False):
-
+    def fill_maze(self, screen, celldimensions, startcell, color, solved=False):
         """
         fills a path a certain color going either back to the start of the maze, or until a node
         :param screen: pygame screen to draw on
@@ -162,7 +161,7 @@ class SolvingAlgorithm:
             available_cells = mazeobj.cell_available(current_cell)
             # if the maze is solved
             if (current_cell.ymaze, current_cell.xmaze) == endcell:
-                loc = mazeobj.fill_maze_red(screen, celldimensions, current_cell, lightgreen, solved=True)
+                loc = mazeobj.fill_maze(screen, celldimensions, current_cell, lightgreen, solved=True)
                 for cell in loc:
                     cellslist.add(cell)
                 cellslist.add(Cell(lightgreen, true[1] + 1, true[0] + 1, celldimensions))
@@ -189,7 +188,7 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
+                            mazeobj.fill_maze(screen, celldimensions, current_cell, pygame.Color('Red'))
                     if direction == 'r':
                         solved, cells = mazeobj.solve_maze(screen, maze, celldimensions,
                                                    (current_cell.ymaze, current_cell.xmaze + 1), endcell, clock,
@@ -199,7 +198,7 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
+                            mazeobj.fill_maze(screen, celldimensions, current_cell, pygame.Color('Red'))
                     if direction == 'l':
                         solved, cells = mazeobj.solve_maze(screen, maze, celldimensions,
                                                    (current_cell.ymaze, current_cell.xmaze - 1), endcell, clock,
@@ -209,12 +208,12 @@ class SolvingAlgorithm:
                             return True, cellslist
                         elif direction == available_cells[-1]:
                             maze[current_cell.ymaze][current_cell.xmaze] = 0
-                            mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
+                            mazeobj.fill_maze(screen, celldimensions, current_cell, pygame.Color('Red'))
 
             # if there are no cells, color this path red
             elif len(available_cells) == 0:
                 maze[current_cell.ymaze][current_cell.xmaze] = 0
-                mazeobj.fill_maze_red(screen, celldimensions, current_cell, pygame.Color('Red'))
+                mazeobj.fill_maze(screen, celldimensions, current_cell, pygame.Color('Red'))
                 in_maze = False
             # if there's only one available cell, go to that cell
             elif len(available_cells) == 1:

@@ -20,7 +20,6 @@ class Game:
         inputx = '50'
         inputy = '50'
         newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-        # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
         character = newmaze.create_a_maze()
         self.points_earned = ' '
         cells = pygame.sprite.Group()
@@ -90,7 +89,6 @@ class Game:
                         if int(inputy) < 3:
                             inputy = '3'
                         newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-                        # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
                         character = newmaze.create_a_maze()
                         timer.reset()
                         cells.empty()
@@ -187,7 +185,6 @@ class Game:
                     highscore = self.points_earned
                 maze_points += self.points_earned
                 newmaze = MazeVisual(self.gamedimension, int(inputx), int(inputy))
-                # allspriteslist, celldimensions, character, maze, startcell, endcell = newmaze.create_a_maze()
                 character = newmaze.create_a_maze()
                 timer.reset()
                 cells.empty()
